@@ -101,7 +101,24 @@
           /*  ++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
           /* PUT ANY CHANGES TO THE JAVASCRIPT HERE  */
-          
+          // Copy image to canvas2 and convert to blue intensities only
+          context2.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
+
+          // Get image data from canvas2
+          var imageData = context2.getImageData(0, 0, 600, 500);
+          var data = imageData.data;
+
+          // Loop over every pixel
+          for (var i = 0; i < data.length; i += 4) {
+          data[i] = 0;     // Red channel
+          data[i + 1] = 0; // Green channel
+          // data[i + 2] is Blue, we keep this one
+          // data[i + 3] is Alpha, we leave it as-is
+          }
+
+// Update canvas2 with blue-only image
+context2.putImageData(imageData, 0, 0);
+
           
           
           
