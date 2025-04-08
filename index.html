@@ -36,6 +36,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=.7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <!-- There was an error message in the JavaScript console, so I investigated where the error was coming from and found that
+  <meta name="apple-mobile-web-app-capable" content="yes"> is outdated, so I added the line above since it is the updated version. -->
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
   <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
@@ -102,28 +104,22 @@
           /*  ++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
           /* PUT ANY CHANGES TO THE JAVASCRIPT HERE  */
-          // Copy image to canvas2 and convert to blue intensities only
+          // Copies the image on to the second canvas.
           context2.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
-
-          // Get image data from canvas2
+          // Retrives the image data from the second canvas, is what allows for editing of the images' pixels.
           var imageData = context2.getImageData(0, 0, 600, 500);
           var data = imageData.data;
-
-          // Loop over every pixel
+          // Loop removes red and green coloring and keeps blue coloring.
           for (var i = 0; i < data.length; i += 4) {
-          data[i] = 0;     // Red channel
-          data[i + 1] = 0; // Green channel
-          // data[i + 2] is Blue, we keep this one
-          // data[i + 3] is Alpha, we leave it as-is
+          data[i] = 0;     // Removes red coloring.
+          data[i + 1] = 0; // Removes green coloring.
           }
 
-// Update canvas2 with blue-only image
-context2.putImageData(imageData, 0, 0);
-console.log("Blue-only image processing complete.");
-          
-          
-          
-        } // end of img.onload
+          // Replaces the second canvas with the blue image.
+          context2.putImageData(imageData, 0, 0);
+          // Logs "Blue image processed." on the console when the blue image shows on the second canvas.
+          console.log("Blue image processed.");
+          } // end of img.onload and added code for this portion.
         
         img.src = reader.result;
       } //  end of reader.onload
@@ -160,13 +156,17 @@ console.log("Blue-only image processing complete.");
         context.fillStyle = "black";
         context.fillText("Original image will go here", 10, 20);
       </script>
-     <canvas id="blueCanvas" width=600 height=500 style="border:1px solid #d3d3d3;"></canvas>
+      <!-- This script initiates the second canvas that matches the style of the original canvas. -->
+      <canvas id="dataCanvas" width=600 height=500 style="border:1px solid #d3d3d3;"></canvas>
       <script>
-        var canvas2 = document.getElementById('blueCanvas');
+        // Retrieves the node in the DOM representing the <canvas> element for the second canvas.
+        var canvas2 = document.getElementById('dataCanvas');
+        // Specifies that 2D graphics will be used, getContext() is used to obtain the rendering context and its drawing functions.
         var context2 = canvas2.getContext("2d");
+        // Displays "Blue image will go here" in blue, 20pt, Calibri font in the second canvas similarly to the original canvas.
         context2.font = '20pt Calibri';
         context2.fillStyle = "blue";
-        context2.fillText("Blue-only image will go here", 10, 20);
+        context2.fillText("Blue image will go here", 10, 20);
        </script>
 
     </div><!-- /content -->
